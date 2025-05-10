@@ -1,0 +1,31 @@
+LOCAL paths:
+.map
+README.md
+directory_GPT.py
+directory_GPT_bundle.zip
+file_master.py
+file_paths.txt
+file_paths.txt.gz
+file_tree.html
+file_tree.html.gz
+file_tree.json
+file_tree.json.gz
+index.html
+index.html.gz
+map_manifest.json
+requirements.txt
+twin.py
+
+VIRTUAL paths:
+master/behaviour.txt
+master/director.txt
+master/directory - SDU Shield Projects.html
+master/directory - SDU Shield Projects_files/ADAVisualizationComponent-b5feuqnm.css
+master/directory - SDU Shield Projects_files/FormattedText-kb0ehjj7.css
+master/directory - SDU Shield Projects_files/conversation-small-fbaqw7iw.css
+master/directory - SDU Shield Projects_files/cot-message-lf3q5fj1.css
+master/directory - SDU Shield Projects_files/root-pe1awy3m.css
+master/directory - SDU Shield Projects_files/unnamed.png
+master/file_tree.html
+master/processes.txt
+master/project_master_file_tree_toggles.md
