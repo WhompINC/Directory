@@ -44,10 +44,7 @@
 </head>
 <body>
   <div class="grid">
-    <div id="sidebar">
-      <h3>Files</h3>
-      <ul id="tree"></ul>
-    </div>
+    <div id="sidebar"><h3>Files</h3><ul id="tree"></ul></div>
     <div id="header">
       <button id="back">◀</button>
       <button id="forward">▶</button>
@@ -160,7 +157,7 @@
             dl.textContent = '⬇️';
             dl.addEventListener('click', e=>{
               e.stopPropagation();
-              window.open(full, '_blank');
+              window.open(full,'_blank');
             });
             div.appendChild(dl);
           }
@@ -184,8 +181,8 @@
       fwdBtn.disabled = pos>=hist.length-1;
     }
 
-    backBtn.onclick  = ()=>{ if(pos>0) navigate(hist[--pos]); };
-    fwdBtn.onclick   = ()=>{ if(pos<hist.length-1) navigate(hist[++pos]); };
+    backBtn.onclick    = ()=>{ if(pos>0) navigate(hist[--pos]); };
+    fwdBtn.onclick     = ()=>{ if(pos<hist.length-1) navigate(hist[++pos]); };
     refreshBtn.onclick = loadTree;
     searchBtn.onclick  = doSearch;
     searchEl.addEventListener('keydown', e=>{ if(e.key==='Enter') doSearch(); });
