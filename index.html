@@ -44,22 +44,30 @@
 </head>
 <body>
   <div class="grid">
+    <!-- Sidebar -->
     <div id="sidebar">
       <h3>Files</h3>
       <ul id="tree"></ul>
     </div>
+
+    <!-- Navigation Header -->
     <div id="header">
       <button id="back">◀</button>
       <button id="forward">▶</button>
       <span id="path">Loading...</span>
     </div>
+
+    <!-- Controls -->
     <div id="controls">
       <button id="refresh">🔄 Refresh</button>
       <input id="search" placeholder="Search..." />
       <button id="search-btn">🔍</button>
     </div>
+
+    <!-- Viewer -->
     <div id="viewer"><pre id="doc-view">Select a file or folder</pre></div>
   </div>
+
   <script>
     const icons = { png:'🖼️', jpg:'🖼️', zip:'🗜️', html:'🌐', c:'💻', h:'💻', txt:'📄' };
     let treeData = {}, env = 'LOCAL', hist = [], pos = -1;
@@ -73,6 +81,7 @@
           searchBtn = document.getElementById('search-btn'),
           refreshBtn = document.getElementById('refresh');
 
+    // Load the JSON map
     async function loadTree(){
       try {
         const res = await fetch('file_tree.json');
@@ -84,6 +93,7 @@
       }
     }
 
+    // Render the sidebar root branches
     function renderSidebar(){
       treeEl.innerHTML = '';
       Object.entries(treeData).forEach(([branch, node]) => {
@@ -104,6 +114,7 @@
       });
     }
 
+    // Recursively build child nodes
     function buildNode(obj, ul, path){
       Object.entries(obj).forEach(([name,val])=>{
         const full = path + '/' + name;
@@ -133,19 +144,27 @@
       });
     }
 
+    // Render main pane
     async function navigate(path){
+      // manage history
       if(hist[pos] !== path){
         hist = hist.slice(0,pos+1);
         hist.push(path);
         pos = hist.length-1;
         updateNav();
       }
+
+      // update path display
       pathEl.textContent = path;
+
+      // locate node
       const parts = path.split('/'), root = parts.shift();
       let node = treeData[root];
       parts.forEach(p=> node = node[p]);
+
       viewer.innerHTML = '';
       if(typeof node === 'object'){
+        // directory: show items
         Object.entries(node).forEach(([name,val])=>{
           const full = root + '/' + name;
           const div = document.createElement('div');
@@ -167,6 +186,7 @@
           viewer.appendChild(div);
         });
       } else {
+        // file: fetch content
         try {
           const res = await fetch(path);
           const text = await res.text();
@@ -184,21 +204,27 @@
       fwdBtn.disabled = pos>=hist.length-1;
     }
 
+    // Button handlers
     backBtn.onclick  = ()=>{ if(pos>0) navigate(hist[--pos]); };
     fwdBtn.onclick   = ()=>{ if(pos<hist.length-1) navigate(hist[++pos]); };
     refreshBtn.onclick = loadTree;
     searchBtn.onclick  = doSearch;
     searchEl.addEventListener('keydown', e=>{ if(e.key==='Enter') doSearch(); });
 
+    // Search shows matching files
     function doSearch(){
       const term = searchEl.value.toLowerCase(), results = [];
       (function walk(obj, p){
         Object.entries(obj).forEach(([n,v])=>{
           const full = p + '/' + n;
-          if(typeof v==='object') walk(v, full);
-          else if(full.toLowerCase().includes(term)) results.push(full);
+          if(typeof v==='object'){
+            walk(v, full);
+          } else if(full.toLowerCase().includes(term)){
+            results.push(full);
+          }
         });
       })(treeData[env], env);
+
       viewer.innerHTML = '';
       results.forEach(full=>{
         const name = full.split('/').pop();
@@ -212,6 +238,7 @@
       });
     }
 
+    // init
     window.onload = loadTree;
   </script>
 </body>
